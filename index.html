@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>（11-李友棚）-对注册页面进行验证</title>
+    </head>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <body>
+        <form action="#">
+            用户名：<input type="text" name="username" id="username"><span id="username_msg"></span><br>
+            密码：<input type="text" name="password" id="password"><span id="password_msg"></span><br>
+            确认密码：<input type="text" name="repasswprd" id="repassword"><span id="repassword_msg"></span><br>
+            <!-- onclick="return checkForm() 如果checkForm返回值是true，就提交表单，否则不提交表单-->
+            <input type="submit" name="submit" value="提交" onclick="return checkForm()"/>
+        </form>
+    </body>
+    <script type="text/javascript">
+        //是否为空
+        function ifnull(txt){
+            if(txt.length==0){
+                return true;
+            }
+            var $reg=/\s+/;
+            return $reg.test(txt);
+        } 
+        //在id为username的元素失去焦点时进行用户名的验证
+        $("#username").blur(function(){
+            if(ifnull($(this).val())){
+                $("#username_msg").html("用户名不能为空");
+            }else{
+                    $("#username_msg").html("√");
+            }
+        });
+        //在id为password的元素失去焦点时进行密码的验证
+        $("#password").blur(function(){
+            if(ifnull($(this).val())){
+                $("#password_msg").html("密码不能为空");
+            }else{
+                var $reg=/^\w{6,}$/;
+                if(!$reg.test($("#password").val())){
+                    $("#password_msg").html("密码至少要6位哦");
+                }else{
+                    $("#password_msg").html("√");
+                }
+            }
+        });
+        //在id为repassword的元素失去焦点时进行密码的验证
+        $("#repassword").blur(function(){
+            if(ifnull($(this).val())){
+                $("#repassword_msg").html("请确认密码");
+            }else{
+                if($("#password").val()!=$("#repassword").val()){
+                    $("#repassword_msg").html("两次密码不一致");
+                }else{
+                    $("#repassword_msg").html("√");
+                }
+            }
+        });
+
+        //验证表单
+        function checkForm(){
+            
+            //验证用户名
+            {if(ifnull($("#username").val())){
+                $("#username_msg").html("用户名不能为空！");
+                return false;
+            } }
+            //验证密码
+            if(ifnull($("#password").val())){
+                $("#password_msg").html("密码不能为空");
+                return false;
+            }else{
+                var $reg=/^\w{6,}$/;
+                if(!$reg.test($("#password").val())){
+                    $("#password_msg").html("密码至少6位");
+                    return false;
+                }
+            }
+            //确认密码是否为空
+            if(ifnull($("#repassword").val())){
+                $("#repassword_msg").html("请确认密码");
+                return false;
+            }
+            //验证两次密码是否一致
+            if($("#password").val()!=$("#repassword").val()){
+                $("#repassword_msg").html("两次密码不一致");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</html>
